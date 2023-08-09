@@ -1,0 +1,61 @@
+{
+  "statements": [
+    {
+      "id": 1,
+      "name": "Shubham",
+      "transactions": [
+        {
+          "Tid": 11,
+          "date": "2023-07-01",
+          "description": "Online Shopping - XYZ Store",
+          "amount": 150.00
+        },
+        {
+          "Tid": 12,
+          "date": "2023-07-05",
+          "description": "Restaurant - ABC Bistro",
+          "amount": 50.00
+        }
+      ],
+      "total_amount_due": 200.00
+    },
+    {
+      "id": 2,
+      "name": "Shreshth",
+      "transactions": [
+        {
+          "Tid": 21,
+          "date": "2023-07-03",
+          "description": "Online Shopping - Fashion Hub",
+          "amount": 80.00
+        },
+        {
+          "Tid": 22,
+          "date": "2023-07-09",
+          "description": "Grocery Store - FreshMart",
+          "amount": 35.00
+        }
+      ],
+      "total_amount_due": 115.00
+    },
+    {
+      "id": 3,
+      "name": "Ankit",
+      "transactions": [
+        {
+          "Tid": 31,
+          "date": "2023-07-02",
+          "description": "Gas Station - Fuel Up",
+          "amount": 40.00
+        },
+        {
+          "Tid": 32,
+          "date": "2023-07-06",
+          "description": "Movie Tickets - Cinemax",
+          "amount": 25.00
+        }
+      ],
+      "total_amount_due": 65.00
+    }
+  ]
+}
