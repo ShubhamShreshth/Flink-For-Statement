@@ -10,4 +10,4 @@ Steps to run this code -
 6. Create two buckets in minio dashboard named - "bucket-for-statement" and "statement-result".
 7. Upload "data.json" and "statement.html" files in "bucket-for-statement" bucket in minio.
 8. Create jar file of your code using command - "mvn clean package".
-9. Upload this jar file in your apache flink dashboard and run your jar file and VIOLA your code ran successfully.
+9. Upload this jar file in your apache flink dashboard and run your jar file and VOILA your code ran successfully.
