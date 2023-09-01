@@ -1,0 +1,88 @@
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: taskmanager
+# spec:
+#   replicas: 1
+#   selector:
+#     matchLabels:
+#       app: taskmanager
+#   template:
+#     metadata:
+#       labels:
+#         app: taskmanager
+#     spec:
+#       containers:
+#         - name: taskmanager
+#           image: flink-app:1.0
+#           # imagePullPolicy: IfNotPresent
+#           env:
+#             - name: FLINK_PROPERTIES
+#               value: jobmanager.rpc.address=jobmanager;taskmanager.numberOfTaskSlots=2
+
+
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: taskmanager
+spec:
+  selector:
+    matchLabels:
+      app: flink
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: flink
+        component: task
+    spec:
+      containers:
+      - name: task
+        image: my-flink-app:1.0
+        workingDir: /opt/flink/usrlib
+        args:
+        - taskmanager
+        ports:
+        - containerPort: 6121
+          name: data
+        - containerPort: 6122
+          name: rpc
+        - containerPort: 6125
+          name: query
+        env:
+        - name: JOB_MANAGER_RPC_ADDRESS
+          value: jobmanager
+        - name: TASK_MANAGER_NUMBER_OF_TASK_SLOTS
+          value: "2"
+
+      #   volumeMounts:
+      #   - name: config-volume
+      #     mountPath: /opt/flink/conf
+
+      # volumes:
+      # - name: config-volume
+      #   configMap:
+      #     name: flink-config
+      #     items:
+      #     - key: flink-config.yaml
+      #       path: flink-config.yaml
+
+        volumeMounts:
+        - name: flink-config-volume
+          mountPath: /opt/flink/conf
+
+      volumes:
+      - name: flink-config-volume
+        configMap:
+          name: flink-config
+          items:
+          - key: flink-conf.yaml
+            path: flink-conf.yaml
+
+
+
+
+
+

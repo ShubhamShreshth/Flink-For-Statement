@@ -1,0 +1,119 @@
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: jobmanager
+# spec:
+#   replicas: 1
+#   selector:
+#     matchLabels:
+#       app: jobmanager
+#   template:
+#     metadata:
+#       labels:
+#         app: jobmanager
+#     spec:
+#       containers:
+#         - name: jobmanager
+#           image: flink-app:1.0
+#           # command: ["jobmanager"]
+#           imagePullPolicy: IfNotPresent
+#           ports:
+#             - containerPort: 8081
+#           env:
+#             - name: FLINK_PROPERTIES
+#               value: jobmanager.rpc.address=jobmanager
+
+# ---
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: taskmanager
+# spec:
+#   replicas: 4
+#   selector:
+#     matchLabels:
+#       app: taskmanager
+#   template:
+#     metadata:
+#       labels:
+#         app: taskmanager
+#     spec:
+#       containers:
+#         - name: taskmanager
+#           image: flink-app:1.0
+#           imagePullPolicy: IfNotPresent
+#           command: ["taskmanager"]
+#           env:
+#             - name: FLINK_PROPERTIES
+#               value: jobmanager.rpc.address=jobmanager;taskmanager.numberOfTaskSlots=2
+#       volumes:
+#         - name: shared-volume
+#           emptyDir: {}
+
+
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: my-flink-app
+# spec:
+#   replicas: 1  # Adjust the number of replicas as needed
+#   selector:
+#     matchLabels:
+#       app: my-flink-app
+#   template:
+#     metadata:
+#       labels:
+#         app: my-flink-app
+#     spec:
+#       containers:
+#         - name: jobmanager
+#           image: my-flink-app:1.0
+#           # command: ["jobmanager"]
+#           ports:
+#             - containerPort: 8081  # JobManager port
+#           env:
+#             - name: FLINK_PROPERTIES
+#               value: jobmanager.rpc.address=jobmanager
+#         - name: taskmanager
+#           image: my-flink-app:1.0
+#           # command: ["taskmanager"]
+#           # ports:
+#           #   - containerPort: 6123  # TaskManager port
+#           env:
+#             - name: FLINK_PROPERTIES
+#               value: jobmanager.rpc.address=jobmanager;taskmanager.numberOfTaskSlots=2
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jobmanager
+spec:
+  selector:
+    matchLabels:
+      app: flink
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: flink
+        component: master
+    spec:
+      containers:
+      - name: master
+        image: my-flink-app:1.0
+        workingDir: /opt/flink/usrlib
+        args:
+        - jobmanager
+        ports:
+        - containerPort: 6123
+          name: rpc
+        - containerPort: 6124
+          name: blob
+        - containerPort: 6125
+          name: query
+        - containerPort: 6126
+          name: ui
+        env:
+        - name: JOB_MANAGER_RPC_ADDRESS
+          value: jobmanager
