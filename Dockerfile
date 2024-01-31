@@ -5,4 +5,9 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 EXPOSE 6123 8081
-CMD ["/docker-entrypoint.sh","help"]
+COPY target/statement_pdf-1.0-SNAPSHOT.jar /opt/flink/usrlib/statement_pdf-1.0-SNAPSHOT.jar
+# ENTRYPOINT ["flink", "run", "-c", "org.example.StatementPDFGenerator", "/opt/flink/usrlib/statement_pdf-1.0-SNAPSHOT.jar"]
+# ENTRYPOINT ["/docker-entrypoint.sh"]
+CMD ["help"]
+
+# flink run -p 6 -c org.example.StatementPDFGenerator /opt/flink/usrlib/statement_pdf-1.0-SNAPSHOT.jar

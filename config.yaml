@@ -1,0 +1,48 @@
+# apiVersion: v1
+# kind: ConfigMap
+# metadata:
+#   name: flink-config
+# data:
+#   flink-config.yaml: |
+#     taskmanager.numberOfTaskSlots: 2
+#     cluster.evenly-spread-out-slots: true
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: flink-config
+  labels:
+    app: flink
+data:
+  flink-conf.yaml: |+
+    jobmanager.rpc.address: jobmanager
+    cluster.evenly-spread-out-slots: true
+    jobmanager.rpc.port: 6123
+    jobmanager.bind-host: 0.0.0.0
+    jobmanager.memory.process.size: 5000m
+    taskmanager.bind-host: 0.0.0.0
+    taskmanager.memory.process.size: 5000m
+    jobmanager.execution.failover-strategy: region
+    rest.address: 0.0.0.0
+    rest.bind-address: 0.0.0.0
+    blob.server.port: 6124
+    query.server.port: 6125
+    taskmanager.rpc.port: 6122
+
+
+# parallelism.default: 4
+
+
+  # flink-conf.yaml: |
+  #   state.backend: rocksdb
+  #   blob.server.port: 6124
+  #   jobmanager.rpc.port: 6123
+  #   parallelism.default: 2
+  #   queryable-state.proxy.ports: 6125
+  #   taskmanager.numberOfTaskSlots: 2
+  #   taskmanager.rpc.port: 6122
+  #   jobmanager.memory.process.size: 2900m
+  #   taskmanager.memory.process.size: 2900m
+  #   jobmanager.web.address: 0.0.0.0
+  #   rest.address: 0.0.0.0
+  #   rest.bind-address: 0.0.0.0
